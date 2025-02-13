@@ -54,7 +54,7 @@
 							"referenceName": "AzureBlobStorageNEW",
 							"type": "LinkedServiceReference"
 						},
-						"path": ""
+						"path": "stagesnowflake"
 					},
 					"translator": {
 						"type": "TabularTranslator",
