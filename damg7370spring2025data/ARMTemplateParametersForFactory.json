@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "damg7370spring2025data"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorageBLOB_accountKey": {
+			"value": ""
+		},
+		"Snowflake1_password": {
+			"value": ""
+		},
+		"SnowflakeNYPD2_password": {
+			"value": ""
+		},
+		"AzureBlobStorageNEW_sasUri": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://stgblobspring25.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorageBLOB_properties_typeProperties_url": {
+			"value": "https://newblobstorage25.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
+			"value": "https://demo7370spring2025.dfs.core.windows.net/"
+		},
+		"AzureKeyVault_LS_properties_typeProperties_baseUrl": {
+			"value": "https://damg7370kvsspring2025.vault.azure.net/"
+		},
+		"Snowflake1_properties_typeProperties_database": {
+			"value": "DAMG25_DB"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"value": "DAMG_ROLE"
+		},
+		"SnowflakeNYPD2_properties_typeProperties_database": {
+			"value": "NYPD2_DB"
+		},
+		"SnowflakeNYPD2_properties_typeProperties_role": {
+			"value": "NYPD2_ROLE"
+		},
+		"SnowflakeNYPD2_properties_typeProperties_host": {
+			"value": "nua36929.east-us-2.azure.snowflakecomputing.com"
+		},
+		"linkedService1_sasUri": {
+			"value": ""
+		},
+		"ls_stgblobspring25_sasUri": {
+			"value": ""
+		}
+	}
+}
