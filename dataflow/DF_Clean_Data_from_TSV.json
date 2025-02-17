@@ -26,7 +26,7 @@
 				"     validateSchema: false,",
 				"     limit: 100,",
 				"     ignoreNoFilesFound: false) ~> readTSVfile",
-				"readTSVfile derive(column1 = ERROR_FUNCTION('')) ~> derivedColumn1"
+				"readTSVfile derive() ~> derivedColumn1"
 			]
 		}
 	}
