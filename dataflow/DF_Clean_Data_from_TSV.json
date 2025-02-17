@@ -6,14 +6,18 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "DelimitedText5",
 						"type": "DatasetReference"
 					},
 					"name": "readTSVfile"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          {License Issue Date     License Number     Animal's Name     Species     Primary Breed     Secondary Breed     ZIP Code} as string",
@@ -21,7 +25,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 100,",
-				"     ignoreNoFilesFound: false) ~> readTSVfile"
+				"     ignoreNoFilesFound: false) ~> readTSVfile",
+				"readTSVfile derive(column1 = ERROR_FUNCTION('')) ~> derivedColumn1"
 			]
 		}
 	}
