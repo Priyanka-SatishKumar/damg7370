@@ -19,14 +19,30 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     Job_Id as string (\"10\")",
+				"}",
 				"source(output(",
-				"          {License Issue Date     License Number     Animal's Name     Species     Primary Breed     Secondary Breed     ZIP Code} as string",
+				"          {License Issue Date} as string,",
+				"          {License Number} as string,",
+				"          {Animal's Name} as string,",
+				"          Species as string,",
+				"          {Primary Breed} as string,",
+				"          {Secondary Breed} as string,",
+				"          {ZIP Code} as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 100,",
 				"     ignoreNoFilesFound: false) ~> readTSVfile",
-				"readTSVfile derive() ~> derivedColumn1"
+				"readTSVfile derive({License Issue Date} = toDate({License Issue Date}, 'MMMM dd yyyy'),",
+				"          {Secondary Breed} = iifNull({Secondary Breed}, 'Unknown'),",
+				"          {ZIP Code} = lpad(toString({ZIP Code}),5,'0'),",
+				"          Species = upper(Species),",
+				"          {License Number} = toInteger(translate({License Number},'S',\"\")),",
+				"          {Animal's Name} = translate({Animal's Name},'()',\"\"),",
+				"          Job_Exec_ID = $Job_Id,",
+				"          Job_load_Date = currentDate()) ~> derivedColumn1"
 			]
 		}
 	}
