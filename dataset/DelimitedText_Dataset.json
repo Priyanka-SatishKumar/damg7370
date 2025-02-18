@@ -1,21 +1,18 @@
 {
-	"name": "DelimitedText2",
+	"name": "DelimitedText_Dataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorageBLOB",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Directory": {
-				"type": "string",
-				"defaultValue": "na"
-			},
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Seattle_Pet_License.tsv"
+				"defaultValue": "test.txt"
 			},
-			"Delimiter": {
-				"type": "string"
+			"FileDelimiter": {
+				"type": "string",
+				"defaultValue": "|"
 			}
 		},
 		"annotations": [],
@@ -23,10 +20,16 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Seattle_Pet_Licenses_new 2.tsv",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
 				"fileSystem": "bronze"
 			},
-			"columnDelimiter": "\t",
+			"columnDelimiter": {
+				"value": "@dataset().FileDelimiter",
+				"type": "Expression"
+			},
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
