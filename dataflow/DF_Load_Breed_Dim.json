@@ -47,9 +47,6 @@
 				},
 				{
 					"name": "derivedColumn"
-				},
-				{
-					"name": "filter1"
 				}
 			],
 			"scriptLines": [
@@ -99,13 +96,12 @@
 				"          SECONDARY_BREED,",
 				"          MAXBREEDSK),",
 				"     COUNT_ROW = count(LICENSE_NUMBER)) ~> AggregateBreedKeys",
-				"filter1 keyGenerate(output(RowNum as long),",
+				"AggregateBreedKeys keyGenerate(output(RowNum as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey",
-				"surrogateKey derive(MAXBREEDSK = AggregateBreedKeys@MAXBREEDSK + RowNum,",
+				"surrogateKey derive(MAXBREEDSK = MAXBREEDSK + RowNum,",
 				"          DI_CREATED_DT = toString(currentDate(), 'yyyy-MM-dd'),",
 				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn",
-				"AggregateBreedKeys filter(ERROR_FUNCTION('')) ~> filter1",
 				"derivedColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
