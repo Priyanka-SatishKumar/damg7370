@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sourceBreedDim"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable6",
+						"type": "DatasetReference"
+					},
+					"name": "sourceBreedDim2"
 				}
 			],
 			"sinks": [
@@ -40,6 +47,9 @@
 				},
 				{
 					"name": "derivedColumn"
+				},
+				{
+					"name": "filter1"
 				}
 			],
 			"scriptLines": [
@@ -68,6 +78,17 @@
 				"     validateSchema: false,",
 				"     query: 'SELECT NVL(MAX(BREED_SK), 0) AS MaxBreedSK FROM NYPD2_SCHEMA.BREED_DIM\\n',",
 				"     format: 'query') ~> sourceBreedDim",
+				"source(output(",
+				"          BREED_SK as string,",
+				"          PRIMARY_BREED_NAME as string,",
+				"          SECONDARY_BREED_NAME as string,",
+				"          SPECIES_NAME as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceBreedDim2",
 				"sourceSTG, sourceBreedDim join(1==1,",
 				"     joinType:'cross',",
 				"     matchType:'exact',",
@@ -78,12 +99,13 @@
 				"          SECONDARY_BREED,",
 				"          MAXBREEDSK),",
 				"     COUNT_ROW = count(LICENSE_NUMBER)) ~> AggregateBreedKeys",
-				"AggregateBreedKeys keyGenerate(output(RowNum as long),",
+				"filter1 keyGenerate(output(RowNum as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey",
-				"surrogateKey derive(MAXBREEDSK = MAXBREEDSK + RowNum,",
+				"surrogateKey derive(MAXBREEDSK = AggregateBreedKeys@MAXBREEDSK + RowNum,",
 				"          DI_CREATED_DT = toString(currentDate(), 'yyyy-MM-dd'),",
 				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn",
+				"AggregateBreedKeys filter(ERROR_FUNCTION('')) ~> filter1",
 				"derivedColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
