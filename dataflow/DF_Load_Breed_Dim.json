@@ -9,11 +9,25 @@
 						"referenceName": "ds_STAGE_SEATTLE_PET_LICENSES",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "sourceSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeBreedDimTable",
+						"type": "DatasetReference"
+					},
+					"name": "sourceBreedDim"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "SourceDatawithSK"
+				},
+				{
+					"name": "AggregateBreedKeys"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          LICENSE_ISSUE_DATE as string,",
@@ -29,7 +43,24 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 100,",
-				"     format: 'table') ~> source1"
+				"     format: 'table') ~> sourceSTG",
+				"source(output(",
+				"          MAXBREEDSK as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(BREED_SK), 0) AS MaxBreedSK FROM NYPD2_SCHEMA.BREED_DIM\\n',",
+				"     format: 'query') ~> sourceBreedDim",
+				"sourceSTG, sourceBreedDim join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> SourceDatawithSK",
+				"SourceDatawithSK aggregate(groupBy(SPECIES,",
+				"          PRIMARY_BREED,",
+				"          SECONDARY_BREED,",
+				"          MAXBREEDSK),",
+				"     COUNT_ROW = count(LICENSE_NUMBER)) ~> AggregateBreedKeys"
 			]
 		}
 	}
