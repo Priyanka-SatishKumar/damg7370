@@ -1,0 +1,40 @@
+{
+	"name": "DF_Location_Dim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "GEODATA",
+						"type": "DatasetReference"
+					},
+					"name": "sourceSTAGEDATA"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          state_fips as string,",
+				"          state as string,",
+				"          state_abbr as string,",
+				"          zipcode as string,",
+				"          county as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false) ~> sourceSTAGEDATA",
+				"sourceSTAGEDATA keyGenerate(output(SK_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1"
+			]
+		}
+	}
+}
