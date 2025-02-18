@@ -48,7 +48,15 @@
 				"inputs": [
 					{
 						"referenceName": "DelimitedText2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Directory": "na",
+							"FileName": "Seattle_Pet_License.tsv",
+							"Delimiter": {
+								"value": "@utcNow()",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
