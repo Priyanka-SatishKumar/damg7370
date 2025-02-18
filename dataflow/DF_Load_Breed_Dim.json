@@ -26,9 +26,18 @@
 				},
 				{
 					"name": "AggregateBreedKeys"
+				},
+				{
+					"name": "surrogateKey"
+				},
+				{
+					"name": "derivedColumn"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string (\"59\")",
+				"}",
 				"source(output(",
 				"          LICENSE_ISSUE_DATE as string,",
 				"          LICENSE_NUMBER as string,",
@@ -60,7 +69,13 @@
 				"          PRIMARY_BREED,",
 				"          SECONDARY_BREED,",
 				"          MAXBREEDSK),",
-				"     COUNT_ROW = count(LICENSE_NUMBER)) ~> AggregateBreedKeys"
+				"     COUNT_ROW = count(LICENSE_NUMBER)) ~> AggregateBreedKeys",
+				"AggregateBreedKeys keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey",
+				"surrogateKey derive(MAXBREEDSK = MAXBREEDSK + RowNum,",
+				"          DI_CREATED_DT = toString(currentDate(), 'yyyy-MM-dd'),",
+				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn"
 			]
 		}
 	}
