@@ -1,0 +1,36 @@
+{
+	"name": "ds_customer_part1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_latearrival",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customer_data_part1.csv",
+				"container": "latearrivalfiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "customerid",
+				"type": "String"
+			},
+			{
+				"name": "CustomerName",
+				"type": "String"
+			},
+			{
+				"name": "billTo",
+				"type": "String"
+			}
+		]
+	}
+}
