@@ -33,9 +33,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"      as string",
-				"}",
 				"source(output(",
 				"          customerid as string,",
 				"          CustomerName as string,",
