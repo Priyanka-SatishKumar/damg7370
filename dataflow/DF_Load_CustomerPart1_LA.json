@@ -67,7 +67,8 @@
 				"          CUSTOMER_ID = customerid,",
 				"          CUSTOMER_NAME = CustomerName,",
 				"          DI_CREATEDDT = DI_Created_DT,",
-				"          PID = pid",
+				"          PID = pid,",
+				"          billTo",
 				"     )) ~> sinkCUstomer"
 			]
 		}
